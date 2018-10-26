@@ -9,7 +9,7 @@ var express = require('express'),
 app.get('/raspagem', function(req, res) {
 
     // Url a ser feita a raspagem de dados
-    url = 'http://www.portaldatransparencia.gov.br/PortalComprasDiretasOEOrgaoSuperior.asp?Ano=2015&Valor=86726995548647&Pagina=1';
+    url = 'http://www.portaldatransparencia.gov.br/cartoes/consulta?tipoCartao=3&de=01%2F01%2F2018&ate=31%2F12%2F2018&ordenarPor=valorTotal&direcao=desc';
 
     // Metodo que faz a requisição para tratarmos (raspar) os dados
     request(url, function(error, response, html) {
@@ -23,11 +23,11 @@ app.get('/raspagem', function(req, res) {
 
             // Escolhendo a tabela para fazer a raspagem
             // e percorrendo as linhas 
-            $('#listagem tr:not(:first-child)').each(function(i) {
+            $('#lista tr:not(:first-child)').each(function(i) {
                 // Obtendo as propriedades do objeto
-                var codigo = $(this).find('td').eq(0).text().trim(),
-                    orgao = $(this).find('td').eq(1).text().trim(),
-                    valorTotal = $(this).find('td').eq(2).text().trim();
+                var codigo = $(this).find('td').eq(0).find('span').text().trim(),
+                    orgao = $(this).find('td').eq(3).find('span').text().trim(),
+                    valorTotal = $(this).find('td').eq(8).find('span').text().trim();
                 // Inserindo os dados num array
                 resultado.push({
                     codigo: codigo,
@@ -36,6 +36,10 @@ app.get('/raspagem', function(req, res) {
                 });
             });
         }
+		else{
+			console.log(error);
+		}
+		
 
         // Escrevendo o arquivo .json com o array 
         fs.writeFile('resultado.json', JSON.stringify(resultado, null, 4), function(err) {
