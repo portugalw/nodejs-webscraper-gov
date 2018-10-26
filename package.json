@@ -1,0 +1,13 @@
+{
+    "name": "nodejs-webscraper-gov",
+   
+    "version": "0.0.1",
+    "description": "Exemplo simples de raspagem de dados em um site do Governo Federal Brasileiro com Node.js.",
+    "main": "server.js",
+    "license": "MIT",
+    "dependencies": {
+        "express": "latest",
+        "request": "latest",
+        "cheerio": "latest"
+    }
+}
